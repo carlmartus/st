@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Hack:pixelsize=12:antialias=true:autohint=true";
+static char *font = "Hack Nerd Font:pixelsize=12:antialias=true:autohint=true";
 static int borderpx = 2;
 
 /*
@@ -84,28 +84,43 @@ unsigned int tabspaces = 8;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
-        [0] = "#000000", /* black   */
-        [1] = "#ff5555", /* red     */
-        [2] = "#50fa7b", /* green   */
-        [3] = "#f1fa8c", /* yellow  */
-        [4] = "#bd93f9", /* blue    */
-        [5] = "#ff79c6", /* magenta */
-        [6] = "#8be9fd", /* cyan    */
-        [7] = "#bbbbbb", /* white   */
+    // [0] = "#000000", /* black   */
+    // [1] = "#ff5555", /* red     */
+    // [2] = "#50fa7b", /* green   */
+    // [3] = "#f1fa8c", /* yellow  */
+    // [4] = "#bd93f9", /* blue    */
+    // [5] = "#ff79c6", /* magenta */
+    // [6] = "#8be9fd", /* cyan    */
+    // [7] = "#bbbbbb", /* white   */
 
-        /* 8 bright colors */
-        [8] = "#44475a",  /* black   */
-        [9] = "#ff5555",  /* red     */
-        [10] = "#50fa7b", /* green   */
-        [11] = "#f1fa8c", /* yellow  */
-        [12] = "#bd93f9", /* blue    */
-        [13] = "#ff79c6", /* magenta */
-        [14] = "#8be9fd", /* cyan    */
-        [15] = "#ffffff", /* white   */
+    // /* 8 bright colors */
+    // [8] = "#44475a",  /* black   */
+    // [9] = "#ff5555",  /* red     */
+    // [10] = "#50fa7b", /* green   */
+    // [11] = "#f1fa8c", /* yellow  */
+    // [12] = "#bd93f9", /* blue    */
+    // [13] = "#ff79c6", /* magenta */
+    // [14] = "#8be9fd", /* cyan    */
+    // [15] = "#ffffff", /* white   */
 
-        /* special colors */
-        [256] = "#282a36", /* background */
-        [257] = "#f8f8f2", /* foreground */
+    // /* special colors */
+    // [256] = "#282a36", /* background */
+    // [257] = "#f8f8f2", /* foreground */
+
+    /*
+     * RED
+    [0] = "#757575",   [1] = "#B8B8B8",   [2] = "#FF5F5F",  [3] = "#D78787",
+    [4] = "#DE8A36",   [5] = "#FF9F6F",   [6] = "#D78787",  [7] = "#FF5F5F",
+    [8] = "#AF5FD7",   [9] = "#DEA3E5",   [10] = "#FF87D7", [11] = "#D7AFAF",
+    [12] = "#DEA3E5",  [13] = "#AF5FD7",  [14] = "#B8B8B8", [15] = "#757575",
+    [256] = "#261515", [257] = "#FFFFFF",
+    */
+
+    [256] = "#2f343f", [257] = "#d7d7d7", [0] = "#383c4a",  [1] = "#383c4a",
+    [2] = "#e28d9d",   [3] = "#e28d9d",   [4] = "#bfd888",  [5] = "#bfd888",
+    [6] = "#df936c",   [7] = "#df936c",   [8] = "#5294e2",  [9] = "#5294e2",
+    [10] = "#f74771",  [11] = "#f74771",  [12] = "#7c818c", [13] = "#7c818c",
+    [14] = "#d7d7d7",  [15] = "#d7d7d7",
 };
 
 /*
@@ -162,11 +177,16 @@ static MouseShortcut mshortcuts[] = {
 
 static Shortcut shortcuts[] = {
     /* mask                 keysym          function        argument */
-    {XK_ANY_MOD, XK_Break, sendbreak, {.i = 0}},  {ControlMask, XK_Print, toggleprinter, {.i = 0}},
-    {ShiftMask, XK_Print, printscreen, {.i = 0}}, {XK_ANY_MOD, XK_Print, printsel, {.i = 0}},
-    {TERMMOD, XK_Prior, zoom, {.f = +1}},         {TERMMOD, XK_Next, zoom, {.f = -1}},
-    {TERMMOD, XK_Home, zoomreset, {.f = 0}},      {TERMMOD, XK_C, clipcopy, {.i = 0}},
-    {TERMMOD, XK_V, clippaste, {.i = 0}},         {TERMMOD, XK_Y, selpaste, {.i = 0}},
+    {XK_ANY_MOD, XK_Break, sendbreak, {.i = 0}},
+    {ControlMask, XK_Print, toggleprinter, {.i = 0}},
+    {ShiftMask, XK_Print, printscreen, {.i = 0}},
+    {XK_ANY_MOD, XK_Print, printsel, {.i = 0}},
+    {TERMMOD, XK_Prior, zoom, {.f = +1}},
+    {TERMMOD, XK_Next, zoom, {.f = -1}},
+    {TERMMOD, XK_Home, zoomreset, {.f = 0}},
+    {TERMMOD, XK_C, clipcopy, {.i = 0}},
+    {TERMMOD, XK_V, clippaste, {.i = 0}},
+    {TERMMOD, XK_Y, selpaste, {.i = 0}},
     {TERMMOD, XK_Num_Lock, numlock, {.i = 0}},
 };
 
@@ -439,14 +459,13 @@ static Key key[] = {
  * If no match is found, regular selection is used.
  */
 static uint selmasks[] = {
-        [SEL_RECTANGULAR] = Mod1Mask,
+    [SEL_RECTANGULAR] = Mod1Mask,
 };
 
 /*
  * Printable characters in ASCII, used to estimate the advance width
  * of single wide characters.
  */
-static char ascii_printable[] =
-    " !\"#$%&'()*+,-./0123456789:;<=>?"
-    "@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
-    "`abcdefghijklmnopqrstuvwxyz{|}~";
+static char ascii_printable[] = " !\"#$%&'()*+,-./0123456789:;<=>?"
+                                "@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_"
+                                "`abcdefghijklmnopqrstuvwxyz{|}~";
